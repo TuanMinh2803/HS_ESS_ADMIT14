@@ -6,6 +6,7 @@
 "./Core/Src/i2c.o"
 "./Core/Src/lsm9ds1.o"
 "./Core/Src/main.o"
+"./Core/Src/medianfilter.o"
 "./Core/Src/stm32f3xx_hal_msp.o"
 "./Core/Src/stm32f3xx_hal_timebase_tim.o"
 "./Core/Src/stm32f3xx_it.o"

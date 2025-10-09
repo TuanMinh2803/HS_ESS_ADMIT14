@@ -34,6 +34,7 @@
 
 #include<math.h> //for Pow Function
 #include "lsm9ds1.h" //IMU Library
+#include "medianfilter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -86,6 +87,16 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){					//Get CAN M
 	receiveFlag++; if(receiveFlag==254) receiveFlag=0;
 }
 
+//For Median filter
+uint16_t ADC_Value_Front_Filtered = 0;
+uint16_t ADC_Value_Rear_Filtered = 0;
+uint16_t ADC_Value_Left_Filtered = 0;
+uint16_t ADC_Value_Right_Filtered = 0;
+
+FilterTypeDef FilterStruct_Front;
+FilterTypeDef FilterStruct_Rear;
+FilterTypeDef FilterStruct_Left;
+FilterTypeDef FilterStruct_Right;
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
@@ -237,10 +248,23 @@ void StartDistSensTask(void const * argument)
   /* USER CODE BEGIN StartDistSensTask */
   /* Infinite loop */
   for(;;)
-  {		//Calc Dist, send to CAN MSG 102
-	for(int i=0;i<4;i++){
-	Dist[i]=CalcDist(ADC_input[i]);
-	}
+  {
+	  //Calc Dist, send to CAN MSG 102
+	HAL_ADC_Start_DMA(&hadc1, ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
+
+	ADC_Value_Front_Filtered = Moving_Average_Compute(ADC_input[0], &FilterStruct_Front);
+	ADC_Value_Rear_Filtered  = Moving_Average_Compute(ADC_input[1], &FilterStruct_Rear);
+	ADC_Value_Left_Filtered  = Moving_Average_Compute(ADC_input[2], &FilterStruct_Left);
+	ADC_Value_Right_Filtered = Moving_Average_Compute(ADC_input[3], &FilterStruct_Right);
+
+	//for(int i=0;i<4;i++){
+	//Dist[i]=CalcDist(ADC_input[i]);
+	//}
+
+	Dist[0]=CalcDist(ADC_Value_Front_Filtered);
+	Dist[1]=CalcDist(ADC_Value_Rear_Filtered);
+	Dist[2]=CalcDist(ADC_Value_Left_Filtered);
+	Dist[3]=CalcDist(ADC_Value_Right_Filtered);
 
 	  if(HAL_CAN_AddTxMessage(&hcan, &TxHeader_Sensor, Dist, &TxMailbox)!= HAL_OK){
 		  Error_Handler();																//Transmit CAN Message, if not succeed then error handle

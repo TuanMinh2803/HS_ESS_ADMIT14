@@ -61,8 +61,8 @@ all: main-build
 main-build: F303_ADMIT14_RTOS.elf secondary-outputs
 
 # Tool invocations
-F303_ADMIT14_RTOS.elf F303_ADMIT14_RTOS.map: $(OBJS) $(USER_OBJS) E:\git\STM32Workspace\F303_ADMIT14_RTOS\STM32F303K8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "F303_ADMIT14_RTOS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"E:\git\STM32Workspace\F303_ADMIT14_RTOS\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F303_ADMIT14_RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+F303_ADMIT14_RTOS.elf F303_ADMIT14_RTOS.map: $(OBJS) $(USER_OBJS) E:\git\HS_ESS_ADMIT14\F303_ADMIT14_RTOS\STM32F303K8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "F303_ADMIT14_RTOS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"E:\git\HS_ESS_ADMIT14\F303_ADMIT14_RTOS\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F303_ADMIT14_RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

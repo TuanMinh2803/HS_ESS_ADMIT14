@@ -59,6 +59,14 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define MCO_Pin GPIO_PIN_0
 #define MCO_GPIO_Port GPIOF
+#define ADC_RearSens_Pin GPIO_PIN_0
+#define ADC_RearSens_GPIO_Port GPIOA
+#define ADC_RightSens_Pin GPIO_PIN_1
+#define ADC_RightSens_GPIO_Port GPIOA
+#define ADC_FrontSens_Pin GPIO_PIN_2
+#define ADC_FrontSens_GPIO_Port GPIOA
+#define ADC_LeftSens_Pin GPIO_PIN_3
+#define ADC_LeftSens_GPIO_Port GPIOA
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14

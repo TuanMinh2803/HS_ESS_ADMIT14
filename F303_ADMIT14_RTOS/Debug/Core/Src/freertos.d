@@ -50,7 +50,7 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/can.h ../Core/Inc/dma.h \
  ../Core/Inc/i2c.h ../Core/Inc/tim.h ../Core/Inc/gpio.h \
  ../Core/Inc/lsm9ds1.h ../Core/Inc/LSM9DS1_Types.h ../Core/Inc/i2c.h \
- ../Core/Inc/LSM9DS1_Registers.h
+ ../Core/Inc/LSM9DS1_Registers.h ../Core/Inc/medianfilter.h
 C:/Users/Minh/STM32Cube/Repository/STM32Cube_FW_F3_V1.11.5/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
 C:/Users/Minh/STM32Cube/Repository/STM32Cube_FW_F3_V1.11.5/Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -110,3 +110,4 @@ C:/Users/Minh/STM32Cube/Repository/STM32Cube_FW_F3_V1.11.5/Middlewares/Third_Par
 ../Core/Inc/LSM9DS1_Types.h:
 ../Core/Inc/i2c.h:
 ../Core/Inc/LSM9DS1_Registers.h:
+../Core/Inc/medianfilter.h:

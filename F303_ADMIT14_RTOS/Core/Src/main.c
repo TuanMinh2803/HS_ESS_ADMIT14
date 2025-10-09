@@ -149,7 +149,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);			//Start PWM generation for 1st channel
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);			//Start PWM generation for 2nd channel
-  HAL_ADC_Start_DMA(&hadc1, ADC_input, 4); 			//Init ADC sampling continuous mode, DMA
 
 
   //I2C LSM9DS1 code init
