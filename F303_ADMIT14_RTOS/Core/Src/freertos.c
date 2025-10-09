@@ -250,7 +250,7 @@ void StartDistSensTask(void const * argument)
   for(;;)
   {
 	  //Calc Dist, send to CAN MSG 102
-	HAL_ADC_Start_DMA(&hadc1, ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
+	HAL_ADC_Start_DMA(&hadc1, &ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
 
 	ADC_Value_Front_Filtered = Moving_Average_Compute(ADC_input[0], &FilterStruct_Front);
 	ADC_Value_Rear_Filtered  = Moving_Average_Compute(ADC_input[1], &FilterStruct_Rear);

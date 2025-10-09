@@ -1833,7 +1833,7 @@ void StartDistSensTask(void const * argument)
   for(;;)
   {
 	  //Calc Dist, send to CAN MSG 102
-	HAL_ADC_Start_DMA(&hadc1, ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
+	HAL_ADC_Start_DMA(&hadc1, &ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
  8001084:	2204      	movs	r2, #4
  8001086:	492f      	ldr	r1, [pc, #188]	@ (8001144 <StartDistSensTask+0xc8>)
  8001088:	482f      	ldr	r0, [pc, #188]	@ (8001148 <StartDistSensTask+0xcc>)
@@ -1936,7 +1936,7 @@ void StartDistSensTask(void const * argument)
     osDelay(1);
  800113c:	2001      	movs	r0, #1
  800113e:	f007 fb78 	bl	8008832 <osDelay>
-	HAL_ADC_Start_DMA(&hadc1, ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
+	HAL_ADC_Start_DMA(&hadc1, &ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
  8001142:	e79f      	b.n	8001084 <StartDistSensTask+0x8>
  8001144:	2000050c 	.word	0x2000050c
  8001148:	20000094 	.word	0x20000094
