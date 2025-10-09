@@ -81,11 +81,7 @@
 //uint32_t last_check_time = 0;
 ////uint8_t changed_or_not;
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){					//Get CAN Msg
 
-	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
-	receiveFlag++; if(receiveFlag==254) receiveFlag=0;
-}
 
 //For Median filter
 uint16_t ADC_Value_Front_Filtered = 0;
@@ -106,7 +102,14 @@ osThreadId IMUProcessHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+//void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){					//Get CAN Msg
+//
+//	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
+//	receiveFlag++; if(receiveFlag==254) receiveFlag=0;
+//}
 
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);					//Get CAN Msg
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
@@ -252,15 +255,6 @@ void StartDistSensTask(void const * argument)
 	  //Calc Dist, send to CAN MSG 102
 	HAL_ADC_Start_DMA(&hadc1, &ADC_input, 4);   //Start sampling at the beginning of task, auto stop after complete sampling of 4 channels
 
-	ADC_Value_Front_Filtered = Moving_Average_Compute(ADC_input[0], &FilterStruct_Front);
-	ADC_Value_Rear_Filtered  = Moving_Average_Compute(ADC_input[1], &FilterStruct_Rear);
-	ADC_Value_Left_Filtered  = Moving_Average_Compute(ADC_input[2], &FilterStruct_Left);
-	ADC_Value_Right_Filtered = Moving_Average_Compute(ADC_input[3], &FilterStruct_Right);
-
-	//for(int i=0;i<4;i++){
-	//Dist[i]=CalcDist(ADC_input[i]);
-	//}
-
 	Dist[0]=CalcDist(ADC_Value_Front_Filtered);
 	Dist[1]=CalcDist(ADC_Value_Rear_Filtered);
 	Dist[2]=CalcDist(ADC_Value_Left_Filtered);
@@ -320,6 +314,18 @@ void StartIMUTask(void const * argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){					//Get CAN Msg
+
+	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
+	receiveFlag++; if(receiveFlag==254) receiveFlag=0;
+}
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
+		ADC_Value_Front_Filtered = Moving_Average_Compute(ADC_input[0], &FilterStruct_Front);
+		ADC_Value_Rear_Filtered  = Moving_Average_Compute(ADC_input[1], &FilterStruct_Rear);
+		ADC_Value_Left_Filtered  = Moving_Average_Compute(ADC_input[2], &FilterStruct_Left);
+		ADC_Value_Right_Filtered = Moving_Average_Compute(ADC_input[3], &FilterStruct_Right);
+}
 
 /* USER CODE END Application */
 
