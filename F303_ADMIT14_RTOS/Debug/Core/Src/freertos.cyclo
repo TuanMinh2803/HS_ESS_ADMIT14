@@ -1,7 +1,0 @@
-../Core/Src/freertos.c:84:6:HAL_CAN_RxFifo0MsgPendingCallback	2
-../Core/Src/freertos.c:126:6:vApplicationGetIdleTaskMemory	1
-../Core/Src/freertos.c:140:6:MX_FREERTOS_Init	1
-../Core/Src/freertos.c:191:6:StartDefaultTask	3
-../Core/Src/freertos.c:226:6:StartPWMTask	1
-../Core/Src/freertos.c:246:6:StartDistSensTask	2
-../Core/Src/freertos.c:284:6:StartIMUTask	4
