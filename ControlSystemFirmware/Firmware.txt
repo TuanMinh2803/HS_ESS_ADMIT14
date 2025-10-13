@@ -1,0 +1,1 @@
+always use XXXX_ADMIT14 firmware. Currently only F303 compatible.
