@@ -18,7 +18,6 @@
 #define READ		0x80	//Set 1st significant bit 1
 #define WRITE		0x00	//Set 1st significant bit 0
 
-
 							//TypeDef//
 
 typedef enum{
@@ -230,7 +229,7 @@ bool ak09916_mag_read_uT(axes* data);
 				//Sub_Funcs
 
 bool icm20948_who_am_i();
-boll ak09916_who_am_i();
+bool ak09916_who_am_i();
 
 void icm20948_device_reset();
 void ak09916_soft_reset();
@@ -263,6 +262,24 @@ void icm20948_accel_calib();
 
 void icm20948_gyro_full_scale_select(gyro_full_scale full_scale);
 void icm20948_accel_full_scale_select(accel_full_scale full_scale);
+
+
+
+
+////////////////////
+						//For Kalman filter
+
+//Kalman structure
+typedef struct{
+	double Q_angle;
+	double Q_bias;
+	double R_measure;
+	double angle;
+	double bias;
+	double P[2][2];
+}Kalman_type;
+
+
 
 
 #endif /* INC_ICM20948_H_ */

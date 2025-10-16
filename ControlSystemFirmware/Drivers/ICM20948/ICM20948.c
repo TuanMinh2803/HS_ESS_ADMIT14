@@ -19,7 +19,7 @@ static void 	write_multiple_icm20948_reg	(userbank ub, uint8_t reg, uint8_t* val
 
 static uint8_t 	read_single_ak09916_reg		(uint8_t reg);
 static void 	write_single_ak09916_reg	(uint8_t reg, uint8_t val);
-static uint8_t* read_multiple_ak09915_reg 	(uint8_t reg, uint8_t len);
+static uint8_t* read_multiple_ak09916_reg 	(uint8_t reg, uint8_t len);
 
 					//Main functions
 
@@ -43,8 +43,8 @@ void icm20948_init(){
 	icm20948_gyro_calib();
 	icm20948_accel_calib();
 
-	icm20948_gyro_full_scale_select(_2000dps);
-	icm20948_accel_full_scale_select(_16g);
+	icm20948_gyro_full_scale_select(_500dps);    //Setup here
+	icm20948_accel_full_scale_select(_4g);
 }
 
 void ak09916_init(){
@@ -81,9 +81,9 @@ bool ak09916_mag_read(axes* data){
 	drdy = read_single_ak09916_reg(MAG_ST1) & 0x01;
 	if (!drdy) return false;
 
-	temp = read_multiple_ak09915_reg(MAG_HXL, 6);
+	temp = read_multiple_ak09916_reg(MAG_HXL, 6);
 
-	holf = read_single_ak09916_reg(MAG_ST2) & 0x08;
+	hofl = read_single_ak09916_reg(MAG_ST2) & 0x08;
 	if(hofl) return false;
 
 	data->x = (int16_t)(temp[1] << 8 | temp[0]);
@@ -123,7 +123,7 @@ bool ak09916_mag_read_uT(axes* data){
 
 					//Sub Func
 
-bool icm_20948_who_am_i(){
+bool icm20948_who_am_i(){
 	uint8_t icm20948_id = read_single_icm20948_reg(ub_0, AGB0_REG_WHO_AM_I);
 
 	if(icm20948_id == ICM20948_ID)
@@ -232,7 +232,7 @@ void icm20948_gyro_sample_rate_divider(uint8_t divider){
 
 void icm20948_accel_sample_rate_divider(uint8_t divider){
 	uint8_t divider_1 = (uint8_t)(divider>>8);
-	uint8_t divider_2 = (uinnt8_t)(0x0F&divider);
+	uint8_t divider_2 = (uint8_t)(0x0F&divider);
 
 	write_single_icm20948_reg(ub_2, AGB2_REG_ACCEL_SMPLRT_DIV_1, divider_1);
 	write_single_icm20948_reg(ub_2, AGB2_REG_ACCEL_SMPLRT_DIV_2, divider_2);
@@ -276,6 +276,7 @@ void icm20948_gyro_calib(){
 
 void icm20948_accel_calib(){
 	axes temp;
+
 	uint8_t* temp2;
 	uint8_t* temp3;
 	uint8_t* temp4;
@@ -299,7 +300,7 @@ void icm20948_accel_calib(){
 	uint8_t mask_bit[3] = {0,0,0};
 
 	temp2 = read_multiple_icm20948_reg(ub_1, AGB1_REG_XA_OFFS_H, 2);
-	accel_bias_reg[0] = (int32_t)(temp2[0] << 8 | temp3[1]);
+	accel_bias_reg[0] = (int32_t)(temp2[0] << 8 | temp2[1]);
 	mask_bit[0] = temp2[1] & 0x01;
 
 	temp3 = read_multiple_icm20948_reg(ub_1, AGB1_REG_YA_OFFS_H, 2);
@@ -347,7 +348,7 @@ void icm20948_gyro_full_scale_select(gyro_full_scale full_scale){
 
 	case _1000dps :
 		new_val |= 0x04;
-		gyro_scale_factor = 32,8;
+		gyro_scale_factor = 32.8;
 		break;
 
 	case _2000dps :
@@ -373,11 +374,11 @@ void icm20948_accel_full_scale_select(accel_full_scale full_scale){
 		accel_scale_factor = 8192;
 		break;
 
-	case _2g:
+	case _8g:
 		new_val |= 0x04;
 		accel_scale_factor = 4096;
 		break;
-	case _2g:
+	case _16g:
 
 		new_val |= 0x06;
 		accel_scale_factor = 2048;
